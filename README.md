@@ -1,4 +1,4 @@
-# Senior Research Project – Fuzzy Activation Stock Predictor
+# Senior Research Project – Fuzzy Activation Stock Predictor (Market Mind)
 
 ## Overview
 
