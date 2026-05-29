@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Methodology - StockLab</title>
+    <meta name="description" content="Detailed explanation of StockLab's machine learning methodology, data sources, and research limitations">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/theme.css">
+    <link rel="stylesheet" href="/styles/print.css">
+    
+    <style>
+        body {
+            background: hsl(var(--background));
+            line-height: 1.7;
+        }
+        
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: hsl(var(--foreground));
+        }
+        
+        .header .subtitle {
+            font-size: 1.125rem;
+            color: hsl(var(--muted-foreground));
+            font-style: italic;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: hsl(var(--foreground));
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid hsl(var(--primary));
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: hsl(var(--foreground));
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            color: hsl(var(--muted-foreground));
+        }
+        
+        .methodology-card {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-item {
+            background: hsl(var(--muted));
+            padding: 1rem;
+            border-radius: var(--radius);
+            border-left: 4px solid hsl(var(--primary));
+        }
+        
+        .feature-item h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+        }
+        
+        .feature-item p {
+            font-size: 0.875rem;
+            margin: 0;
+        }
+        
+        .equation {
+            background: hsl(var(--muted));
+            padding: 1rem;
+            border-radius: var(--radius);
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 1rem 0;
+            border-left: 4px solid hsl(var(--primary));
+        }
+        
+        .warning-box {
+            background: hsl(var(--warning) / 0.1);
+            border: 1px solid hsl(var(--warning) / 0.3);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .warning-box h3 {
+            color: hsl(var(--warning));
+            margin-top: 0;
+        }
+        
+        .limitation-box {
+            background: hsl(var(--danger) / 0.1);
+            border: 1px solid hsl(var(--danger) / 0.3);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .limitation-box h3 {
+            color: hsl(var(--danger));
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background: hsl(var(--muted));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .metrics-table th,
+        .metrics-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+        
+        .metrics-table th {
+            background: hsl(var(--muted));
+            font-weight: 600;
+        }
+        
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid hsl(var(--border));
+            margin-top: 3rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 1rem;
+            }
+            
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        @media print {
+            .navigation,
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <main class="content">
+        <!-- Header -->
+        <header class="header">
+            <h1>Research Methodology</h1>
+            <p class="subtitle">
+                A comprehensive overview of our machine learning approach to earnings week stock prediction
+            </p>
+        </header>
+
+        <!-- Introduction -->
+        <section class="section">
+            <h2>1. Research Objective</h2>
+            <p>
+                The primary goal of this research is to predict stock price movements during earnings announcement weeks 
+                using machine learning techniques. We focus specifically on the direction of price movement (up or down) 
+                rather than magnitude, as this is often more practical for trading strategies.
+            </p>
+            
+            <div class="methodology-card">
+                <h3>Research Question</h3>
+                <p>
+                    <strong>Can machine learning models effectively predict the direction of stock price movements 
+                    during earnings weeks using historical market data and technical indicators?</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Data Sources -->
+        <section class="section">
+            <h2>2. Data Sources & Collection</h2>
+            
+            <h3>2.1 Stock Price Data</h3>
+            <p>
+                We collect daily Open, High, Low, Close, and Volume (OHLCV) data using the yfinance Python library. 
+                This provides access to Yahoo Finance's historical data going back several decades for most major stocks.
+            </p>
+            
+            <div class="methodology-card">
+                <h4>Data Specifications:</h4>
+                <ul style="color: hsl(var(--muted-foreground)); margin-left: 1.5rem;">
+                    <li><strong>Frequency:</strong> Daily bars</li>
+                    <li><strong>History:</strong> Minimum 5 years, up to 10 years when available</li>
+                    <li><strong>Universe:</strong> S&P 500 constituents and major tech stocks</li>
+                    <li><strong>Adjustments:</strong> Split and dividend adjusted prices</li>
+                </ul>
+            </div>
+            
+            <h3>2.2 Earnings Data</h3>
+            <p>
+                Earnings announcement dates and surprise metrics are collected from multiple sources with fallback mechanisms:
+            </p>
+            
+            <div class="code-block">
+# Primary: yfinance earnings calendar
+# Fallback: Alpha Vantage API (requires key)
+# Fallback: Finnhub API (requires key)
+            </div>
+            
+            <h3>2.3 Data Quality & Preprocessing</h3>
+            <p>
+                All data undergoes validation and cleaning procedures to ensure quality:
+            </p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Missing Data</h4>
+                    <p>Forward-fill missing values, drop stocks with >5% missing data in analysis window</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Outlier Detection</h4>
+                    <p>Remove price movements >50% in single day (likely data errors or corporate actions)</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Corporate Actions</h4>
+                    <p>Use split-adjusted prices; exclude earnings windows affected by major M&A or spinoffs</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Survivorship Bias</h4>
+                    <p>Include delisted stocks where data is available to avoid survivorship bias</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Engineering -->
+        <section class="section">
+            <h2>3. Feature Engineering</h2>
+            
+            <p>
+                Our feature set combines technical indicators, fundamental metrics, and market context variables. 
+                All features are calculated using only information available at the time of prediction to avoid look-ahead bias.
+            </p>
+            
+            <h3>3.1 Technical Indicators</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Price Returns</h4>
+                    <p>1-day, 5-day, 10-day, and 20-day returns relative to earnings announcement</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Moving Averages</h4>
+                    <p>SMA(20), SMA(50), SMA(200) and current price gaps relative to these levels</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Momentum Indicators</h4>
+                    <p>RSI(14), MACD(12,26,9), and momentum oscillator values</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Volatility</h4>
+                    <p>20-day rolling volatility, volatility rank, and average true range</p>
+                </div>
+            </div>
+            
+            <h3>3.2 Fundamental Features</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Earnings History</h4>
+                    <p>Historical earnings surprise %, beat/miss ratio, surprise trend</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Volume Patterns</h4>
+                    <p>Volume ratios, average volume, volume trend leading up to earnings</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Market Context</h4>
+                    <p>Sector performance, market correlation, relative strength vs SPY</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Seasonality</h4>
+                    <p>Month of year, quarter, days since last earnings announcement</p>
+                </div>
+            </div>
+            
+            <h3>3.3 Feature Engineering Pipeline</h3>
+            <div class="equation">
+                Feature_t = f(Price_{t-n:t}, Volume_{t-n:t}, Earnings_history, Market_context_t)
+            </div>
+            
+            <p>
+                Where t represents the day before earnings announcement (T-1) and n varies by feature type (typically 1-252 days).
+            </p>
+        </section>
+
+        <!-- Label Definition -->
+        <section class="section">
+            <h2>4. Label Definition & Target Variable</h2>
+            
+            <p>
+                The target variable represents the direction of stock price movement during the "earnings window" - 
+                a period surrounding the earnings announcement.
+            </p>
+            
+            <div class="methodology-card">
+                <h3>Label Calculation</h3>
+                <div class="equation">
+                    y = sign(Close_{T+2} - Close_{T-1})
+                </div>
+                <p>
+                    Where T is the earnings announcement date. We use T-1 to T+2 to capture:
+                </p>
+                <ul style="margin-left: 1.5rem; color: hsl(var(--muted-foreground));">
+                    <li>Pre-announcement positioning effects</li>
+                    <li>Initial market reaction</li>
+                    <li>Post-announcement adjustment period</li>
+                </ul>
+            </div>
+            
+            <h3>4.1 Alternative Label Definitions Considered</h3>
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Label Type</th>
+                        <th>Definition</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Binary Direction</td>
+                        <td>sign(T+2 - T-1)</td>
+                        <td>Simple, tradeable</td>
+                        <td>Ignores magnitude</td>
+                    </tr>
+                    <tr>
+                        <td>Magnitude Bins</td>
+                        <td>|T+2 - T-1| buckets</td>
+                        <td>Captures size of moves</td>
+                        <td>Unbalanced classes</td>
+                    </tr>
+                    <tr>
+                        <td>Excess Return</td>
+                        <td>(T+2 - T-1) - Market</td>
+                        <td>Market-neutral</td>
+                        <td>Complex interpretation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Machine Learning Models -->
+        <section class="section">
+            <h2>5. Machine Learning Models</h2>
+            
+            <h3>5.1 Model Selection</h3>
+            <p>
+                We implement multiple model architectures to compare performance and robustness:
+            </p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Random Forest</h4>
+                    <p>Baseline ensemble method with built-in feature importance and good interpretability</p>
+                </div>
+                <div class="feature-item">
+                    <h4>XGBoost</h4>
+                    <p>Gradient boosting for enhanced performance with careful hyperparameter tuning</p>
+                </div>
+                <div class="feature-item">
+                    <h4>LSTM (Optional)</h4>
+                    <p>Recurrent neural network for capturing temporal dependencies in price sequences</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Logistic Regression</h4>
+                    <p>Linear baseline for comparison and coefficient interpretation</p>
+                </div>
+            </div>
+            
+            <h3>5.2 Model Training & Validation</h3>
+            <p>
+                We use time-series cross-validation to respect the temporal nature of financial data:
+            </p>
+            
+            <div class="methodology-card">
+                <h4>Cross-Validation Strategy</h4>
+                <ul style="margin-left: 1.5rem; color: hsl(var(--muted-foreground));">
+                    <li><strong>Training Window:</strong> 2 years of historical data</li>
+                    <li><strong>Validation Window:</strong> 6 months forward testing</li>
+                    <li><strong>Step Size:</strong> 3 months (rolling window)</li>
+                    <li><strong>Gap:</strong> 1 week between train and validation to prevent leakage</li>
+                </ul>
+            </div>
+            
+            <h3>5.3 Hyperparameter Optimization</h3>
+            <div class="code-block">
+# Random Forest Parameters
+{
+    'n_estimators': [100, 200, 500],
+    'max_depth': [10, 20, None],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+# XGBoost Parameters  
+{
+    'n_estimators': [100, 200, 500],
+    'learning_rate': [0.01, 0.1, 0.2],
+    'max_depth': [3, 6, 10],
+    'subsample': [0.8, 0.9, 1.0]
+}
+            </div>
+        </section>
+
+        <!-- Evaluation Metrics -->
+        <section class="section">
+            <h2>6. Evaluation Metrics</h2>
+            
+            <p>
+                Given the financial application, we focus on metrics relevant to trading performance 
+                rather than just statistical accuracy.
+            </p>
+            
+            <h3>6.1 Classification Metrics</h3>
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Formula</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Accuracy</td>
+                        <td>(TP + TN) / (TP + TN + FP + FN)</td>
+                        <td>Overall correctness, baseline ~50%</td>
+                    </tr>
+                    <tr>
+                        <td>Precision</td>
+                        <td>TP / (TP + FP)</td>
+                        <td>When we predict "up", how often right?</td>
+                    </tr>
+                    <tr>
+                        <td>Recall</td>
+                        <td>TP / (TP + FN)</td>
+                        <td>Of actual "up" moves, how many caught?</td>
+                    </tr>
+                    <tr>
+                        <td>F1-Score</td>
+                        <td>2 * (Precision * Recall) / (Precision + Recall)</td>
+                        <td>Harmonic mean of precision and recall</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>6.2 Financial Metrics</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Directional Accuracy</h4>
+                    <p>Percentage of correct directional predictions (most important for trading)</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Profit Factor</h4>
+                    <p>Ratio of profits from correct predictions to losses from incorrect ones</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Sharpe Ratio</h4>
+                    <p>Risk-adjusted returns of a strategy based on model predictions</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Maximum Drawdown</h4>
+                    <p>Largest peak-to-trough decline in strategy equity curve</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Backtesting -->
+        <section class="section">
+            <h2>7. Backtesting Framework</h2>
+            
+            <p>
+                We implement a comprehensive backtesting system to evaluate both our ML models 
+                and traditional strategies on historical data.
+            </p>
+            
+            <h3>7.1 Strategy Implementation</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Buy & Hold</h4>
+                    <p>Baseline strategy: buy and hold throughout the entire period</p>
+                </div>
+                <div class="feature-item">
+                    <h4>SMA Crossover</h4>
+                    <p>Long when SMA(50) > SMA(200), short otherwise</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Momentum 12-1</h4>
+                    <p>Monthly rebalancing based on 12-month minus 1-month returns</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Earnings Week ML</h4>
+                    <p>Trade around earnings based on ML model predictions</p>
+                </div>
+            </div>
+            
+            <h3>7.2 Transaction Cost Modeling</h3>
+            <div class="methodology-card">
+                <h4>Cost Structure</h4>
+                <ul style="margin-left: 1.5rem; color: hsl(var(--muted-foreground));">
+                    <li><strong>Commission:</strong> $0.005 per share (typical retail)</li>
+                    <li><strong>Slippage:</strong> 0.05% of trade value (market impact)</li>
+                    <li><strong>Spread:</strong> 0.02% for liquid stocks (bid-ask spread)</li>
+                    <li><strong>Borrowing Cost:</strong> 2% annually for short positions</li>
+                </ul>
+            </div>
+            
+            <h3>7.3 Risk Management</h3>
+            <p>
+                Position sizing and risk controls are implemented to ensure realistic backtesting:
+            </p>
+            
+            <div class="code-block">
+# Position Sizing Rules
+max_position_size = 0.1  # 10% of portfolio per position
+max_sector_exposure = 0.3  # 30% in any single sector
+stop_loss = 0.05  # 5% stop loss on individual positions
+max_leverage = 1.0  # No leverage allowed
+            </div>
+        </section>
+
+        <!-- Limitations -->
+        <section class="section">
+            <h2>8. Limitations & Assumptions</h2>
+            
+            <div class="limitation-box">
+                <h3>⚠️ Important Limitations</h3>
+                <p>
+                    This research has several important limitations that users must understand:
+                </p>
+            </div>
+            
+            <h3>8.1 Data Limitations</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Survivorship Bias</h4>
+                    <p>Focus on large-cap stocks may overestimate performance</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Look-Ahead Bias</h4>
+                    <p>Despite precautions, some features may leak future information</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Data Quality</h4>
+                    <p>Free data sources may have errors or delays compared to professional feeds</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Sample Size</h4>
+                    <p>Limited earnings events per stock reduces statistical power</p>
+                </div>
+            </div>
+            
+            <h3>8.2 Model Limitations</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Overfitting Risk</h4>
+                    <p>Complex models may not generalize to new market conditions</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Regime Changes</h4>
+                    <p>Models trained on historical data may fail during market regime shifts</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Feature Stability</h4>
+                    <p>Predictive features may become less relevant over time</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Non-Stationarity</h4>
+                    <p>Financial markets evolve, making historical patterns less reliable</p>
+                </div>
+            </div>
+            
+            <h3>8.3 Implementation Limitations</h3>
+            <div class="methodology-card">
+                <ul style="margin-left: 1.5rem; color: hsl(var(--muted-foreground));">
+                    <li>Backtesting assumes perfect execution at closing prices</li>
+                    <li>No account for market impact of large orders</li>
+                    <li>Simplified transaction cost model</li>
+                    <li>No consideration of funding costs or margin requirements</li>
+                    <li>Assumes continuous market liquidity</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Ethics & Disclaimers -->
+        <section class="section">
+            <h2>9. Ethical Considerations & Disclaimers</h2>
+            
+            <div class="warning-box">
+                <h3>🚨 Educational Purpose Only</h3>
+                <p>
+                    This research is conducted for educational purposes as part of a high school senior project. 
+                    <strong>Nothing in this work should be construed as financial advice.</strong>
+                </p>
+            </div>
+            
+            <h3>9.1 Responsible AI Principles</h3>
+            <p>
+                Our approach follows responsible AI practices in finance:
+            </p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Transparency</h4>
+                    <p>All methods, data sources, and limitations are openly documented</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Explainability</h4>
+                    <p>Model decisions are explained through feature importance and SHAP values</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Bias Awareness</h4>
+                    <p>We acknowledge and document potential biases in our approach</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Risk Disclosure</h4>
+                    <p>Clear communication of risks and limitations to all users</p>
+                </div>
+            </div>
+            
+            <h3>9.2 Investment Disclaimers</h3>
+            <div class="limitation-box">
+                <ul style="margin-left: 1.5rem;">
+                    <li>Past performance does not guarantee future results</li>
+                    <li>All investments carry risk of loss</li>
+                    <li>Models may fail without warning</li>
+                    <li>Professional advice should be sought before investing</li>
+                    <li>This is a student research project, not a commercial product</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Future Work -->
+        <section class="section">
+            <h2>10. Future Research Directions</h2>
+            
+            <p>
+                This project establishes a foundation for several potential research extensions:
+            </p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Alternative Data</h4>
+                    <p>Incorporate news sentiment, social media, and earnings call transcripts</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Deep Learning</h4>
+                    <p>Explore transformer models and attention mechanisms for time series</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Multi-Asset</h4>
+                    <p>Extend to bonds, commodities, and cryptocurrency markets</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Real-Time</h4>
+                    <p>Develop streaming prediction system with live data feeds</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="navigation no-print">
+            <div class="nav-links">
+                <a href="/landing.html" class="btn btn-outline">← Back to Home</a>
+                <a href="/about.html" class="btn btn-outline">Meet the Team</a>
+                <a href="/" class="btn btn-primary">Launch Interactive App</a>
+                <button onclick="window.print()" class="btn btn-secondary">Print This Page</button>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: hsl(var(--muted-foreground)); border-top: 1px solid hsl(var(--border));">
+        <p>&copy; 2024 StockLab Research Team. Educational use only - Not financial advice.</p>
+    </footer>
+</body>
+</html>
