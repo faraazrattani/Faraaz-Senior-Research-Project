@@ -28,18 +28,31 @@ The project compares a traditional ReLU-based neural network against a fuzzy-act
 ---
 
 ## Project Structure
+
 Senior-Research-Project-stock-predictor/
 │
-├── main.py # Main training and evaluation pipeline
-├── feature_extraction.py # Data collection and feature engineering
-├── fuzzy_activation.py # Fuzzy activation model
-├── relu.py # ReLU baseline model
-├── backtesting.py # Backtesting framework
-├── stocks.txt # List of stock tickers
+├── main.py
+│   └── Main training and evaluation pipeline
+│
+├── feature_extraction.py
+│   └── Data collection and feature engineering
+│
+├── fuzzy_activation.py
+│   └── Fuzzy activation model implementation
+│
+├── relu.py
+│   └── ReLU baseline model
+│
+├── backtesting.py
+│   └── Backtesting and performance evaluation framework
+│
+├── stocks.txt
+│   └── List of stock tickers used in experiments
 │
 └── data/
-└── processed/
-└── dataset.npz
+    └── processed/
+        └── dataset.npz
+            └── Processed dataset used for model training and testing
 
 
 ---
