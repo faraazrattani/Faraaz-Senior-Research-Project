@@ -1,0 +1,191 @@
+/* Theme-specific styles for light and dark modes */
+
+/* Light Theme */
+[data-theme="light"] {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 214 100% 50%;
+  --primary-foreground: 0 0% 98%;
+  --primary-glow: 214 100% 65%;
+  --secondary: 210 40% 95%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 214 100% 50%;
+  --success: 142 76% 36%;
+  --danger: 0 84% 60%;
+  --warning: 45 93% 47%;
+}
+
+/* Dark Theme (default) */
+[data-theme="dark"],
+:root {
+  --background: 240 7% 4%;
+  --foreground: 0 0% 98%;
+  --card: 240 6% 6%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 6% 8%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 214 100% 50%;
+  --primary-foreground: 0 0% 98%;
+  --primary-glow: 214 100% 65%;
+  --secondary: 240 4% 16%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 4% 12%;
+  --muted-foreground: 240 5% 65%;
+  --accent: 240 4% 16%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 4% 16%;
+  --input: 240 4% 16%;
+  --ring: 214 100% 50%;
+  --success: 142 76% 36%;
+  --danger: 0 84% 60%;
+  --warning: 45 93% 47%;
+}
+
+/* Theme-specific component styles */
+[data-theme="light"] .card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .card {
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .btn-outline {
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+[data-theme="light"] .btn-outline:hover {
+  background-color: hsl(var(--accent));
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  background-color: hsl(var(--accent));
+}
+
+/* Theme toggle animation */
+[data-theme] {
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+/* Syntax highlighting for code blocks */
+[data-theme="light"] pre {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+[data-theme="dark"] pre {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+[data-theme="light"] code {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--primary));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+[data-theme="dark"] code {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--primary-glow));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+/* Financial colors that adapt to theme */
+.price-up {
+  color: hsl(var(--success));
+}
+
+.price-down {
+  color: hsl(var(--danger));
+}
+
+.price-neutral {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Chart-specific theme adaptations */
+.chart-grid {
+  stroke: hsl(var(--border));
+  stroke-opacity: 0.5;
+}
+
+.chart-axis {
+  stroke: hsl(var(--muted-foreground));
+}
+
+.chart-text {
+  fill: hsl(var(--muted-foreground));
+  font-size: 12px;
+}
+
+/* Loading states */
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted) / 0.5) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Error states */
+.error-message {
+  color: hsl(var(--danger));
+  background-color: hsl(var(--danger) / 0.1);
+  border: 1px solid hsl(var(--danger) / 0.2);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+/* Success states */
+.success-message {
+  color: hsl(var(--success));
+  background-color: hsl(var(--success) / 0.1);
+  border: 1px solid hsl(var(--success) / 0.2);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+/* Warning states */
+.warning-message {
+  color: hsl(var(--warning));
+  background-color: hsl(var(--warning) / 0.1);
+  border: 1px solid hsl(var(--warning) / 0.2);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
