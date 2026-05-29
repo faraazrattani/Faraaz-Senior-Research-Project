@@ -1,6 +1,0 @@
-@import '/styles/global.css';
-@import '/styles/theme.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
